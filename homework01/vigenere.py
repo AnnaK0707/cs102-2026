@@ -1,3 +1,6 @@
+"""
+Module containing Vigenere cipher encryption and decryption functions.
+"""
 def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     """
     Encrypts plaintext using a Vigenere cipher.
@@ -9,25 +12,30 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     'LXFOPVEFRNHR'
     """
     ciphertext = ""
-    keyword = keyword.upper()  # переводим ключ в заглавный регистр
-    keyword_index = 0  # инициализируем счетчик для циклического перебора букв ключа
+    keyword = keyword.upper()
+    keyword_index = 0
     for letter in plaintext:
-        if letter.isalpha():  # проверяем, что символ является буквой
-            if letter.isupper():  # обработка заглавных букв
-                ciphertext += chr(
-                    ((ord(letter) - ord("A")) + (ord(keyword[keyword_index % len(keyword)]) - ord("A"))) % 26 + ord(
-                        "A"))
-                # прибавляем к сдвигу большой буквы текста сдвиг заглавной буквы ключа, зацикливаем по %26 и возвращаем в Юникод
-            elif letter.islower():  # шифруем строчные буквы
-                ciphertext += chr(
-                    ((ord(letter) - ord("a")) + (ord(keyword[keyword_index % len(keyword)]) - ord("A"))) % 26 + ord(
-                        "a"))
-                # прибавляем к сдвигу маленькой буквы текста сдвиг заглавной буквы ключа и переводим в строчный Юникод
-
+        if letter.isupper():
+            ciphertext += chr(
+                (
+                    (ord(letter) - ord("A"))
+                    + (ord(keyword[keyword_index % len(keyword)]) - ord("A"))
+                )
+                % 26
+                + ord("A")
+            )
+        elif letter.islower():
+            ciphertext += chr(
+                (
+                    (ord(letter) - ord("a"))
+                    + (ord(keyword[keyword_index % len(keyword)]) - ord("A"))
+                )
+                % 26
+                + ord("a")
+            )
         else:
             ciphertext += letter
-        keyword_index += 1  # переход к следующему символу ключа
-
+        keyword_index += 1
     return ciphertext
 
 
@@ -43,21 +51,27 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     """
     plaintext = ""
     keyword = keyword.upper()
-    keyword_index_1 = 0  # инициализируем счетчик для обратного перебора букв ключа
-    for letter_1 in ciphertext:
-        if letter_1.isalpha():
-            if letter_1.isupper():
-                plaintext += chr(
-                    ((ord(letter_1) - ord("A")) - (ord(keyword[keyword_index_1 % len(keyword)]) - ord("A"))) % 26 + ord(
-                        "A"))
-                # вычитаем сдвиг заглавной буквы ключа из сдвига большой буквы текста, зацикливаем и возвращвем в Юникод
-            elif letter_1.islower():
-                plaintext += chr(
-                    ((ord(letter_1) - ord("a")) - (ord(keyword[keyword_index_1 % len(keyword)]) - ord("A"))) % 26 + ord(
-                        "a"))
-                # вычитаем сдвиг заглавной буквы ключа из сдвига маленькой буквы текста и переводим в строчный Юникод
-
+    keyword_index = 0
+    for letter in ciphertext:
+        if letter.isupper():
+            plaintext += chr(
+                (
+                    (ord(letter) - ord("A"))
+                    - (ord(keyword[keyword_index % len(keyword)]) - ord("A"))
+                )
+                % 26
+                + ord("A")
+            )
+        elif letter.islower():
+            plaintext += chr(
+                (
+                    (ord(letter) - ord("a"))
+                    - (ord(keyword[keyword_index % len(keyword)]) - ord("A"))
+                )
+                % 26
+                + ord("a")
+            )
         else:
-            plaintext += letter_1
-        keyword_index_1 += 1  # переходим к следующему символу ключа
+            plaintext += letter
+        keyword_index += 1
     return plaintext
